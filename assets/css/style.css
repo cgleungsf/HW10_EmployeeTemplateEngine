@@ -1,0 +1,13 @@
+body{
+    background-color: rgb(65, 64, 64);
+}
+
+.jumbotron{
+background-image: url("../image/keyboard_image.jpg");
+color: white;
+}
+
+.employee-card{
+margin: 10px;
+width: 30%;
+}
