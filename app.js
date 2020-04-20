@@ -13,37 +13,44 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
-function initPrompt() {
-    return inquirer.prompt([
+async function initPrompt() {
+    await inquirer.prompt([
         {
             type: "list",
             name: "role",
             message: "What position would you like to add?",
             choices: ["Manager", "Engineer", "Intern", "I'm done, I don't want to add any more team members"],
         },
-        {
-            type: "input",
-            name: "name",
-            message: "Enter employee name: "
-        },
-        {
-            type: "input",
-            name: "email",
-            message: "Enter employee email: "
-        },
-        {
-            type: "input",
-            name: "id",
-            message: "Enter employee id: "
+    ]).then(async function (position) {
+        if (position.role === "I'm done, I don't want to add any more team members") {
+            console.log(team);
+            render(team)
         }
-    ],
-    ).then(async function (data) {
-        // let specific = await addPrompt(data);
-        await addPrompt(data);
-
-    })
-}
-
+        else {
+            await inquirer.prompt([
+                {
+                    type: "input",
+                    name: "name",
+                    message: "Enter employee name: "
+                },
+                {
+                    type: "input",
+                    name: "email",
+                    message: "Enter employee email: "
+                },
+                {
+                    type: "input",
+                    name: "id",
+                    message: "Enter employee id: "
+                }
+            ],
+            ).then(async function (data) {
+                let positionInput = {...position, ...data}
+                await addPrompt(positionInput);
+            })
+        }
+    }
+)}
 async function addPrompt(response) {
     if (response.role === "Manager") {
         await inquirer.prompt([
@@ -87,12 +94,7 @@ async function addPrompt(response) {
             initPrompt()
         })
     }
-    else {
-        console.log(team);
-        console.log("no more team members to add")
-    }
 }
-
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
