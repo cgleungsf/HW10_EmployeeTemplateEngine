@@ -28,7 +28,7 @@ The command line application will then prompt you with the required information.
 
 In order to validate the data with jest, invoke the code:
 
-     `npm run test`. 
+- npm run test
 
 
 ## Technologies
